@@ -48,7 +48,7 @@ const Index = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-accent/10 mb-6">
             <FileSearch className="h-8 w-8 text-accent" />
           </div>
-          <h1 className="text-4xl md:text-5xl text-foreground mb-3">Resume Analyzer</h1>
+          <h1 className="text-4xl md:text-5xl text-foreground mb-3">ResumeAi</h1>
           <p className="text-lg text-muted-foreground max-w-lg mx-auto">
             Upload your resume and get instant AI-powered feedback, skill analysis, and a professional score.
           </p>
