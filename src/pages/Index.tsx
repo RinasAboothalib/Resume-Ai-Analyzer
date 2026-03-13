@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ResumeUploader } from "@/components/ResumeUploader";
 import { AnalysisResults, AnalysisData } from "@/components/AnalysisResults";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { FileSearch } from "lucide-react";
 
@@ -11,18 +10,31 @@ const Index = () => {
 
   const handleAnalyze = async (resumeText: string, targetRole: string) => {
     setIsLoading(true);
+
     try {
-      const { data, error } = await supabase.functions.invoke("analyze-resume", {
-        body: { resumeText, targetRole },
-      });
+      const response = await fetch(
+        "https://tijawxoqskcllxuyppnu.supabase.co/functions/v1/analyze-resume",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            resumeText,
+            targetRole,
+          }),
+        }
+      );
 
-      if (error) throw error;
-      if (data.error) throw new Error(data.error);
+      if (!response.ok) {
+        throw new Error("Failed to call Supabase function");
+      }
 
+      const data = await response.json();
       setAnalysis(data);
-    } catch (e: any) {
-      console.error(e);
-      toast.error(e.message || "Analysis failed. Please try again.");
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || "Error analyzing resume");
     } finally {
       setIsLoading(false);
     }
